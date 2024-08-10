@@ -1,0 +1,80 @@
+Normal Mode Commands
+
+h, j, k, l: Move left, down, up, right
+0: Move to the beginning of the line
+$: Move to the end of the line
+w: Move to the beginning of the next word
+b: Move to the beginning of the previous word
+gg: Move to the beginning of the file
+G: Move to the end of the file
+nG: Move to the nth line of the file
+ctrl+f: Page down
+ctrl+b: Page up
+:n: Go to line number n
+
+Editing
+
+i: Insert mode before the cursor
+a: Insert mode after the cursor
+I: Insert mode at the beginning of the line
+A: Insert mode at the end of the line
+o: Open a new line below the current line and enter insert mode
+O: Open a new line above the current line and enter insert mode
+x: Delete the character under the cursor
+dd: Delete the current line
+dw: Delete the word
+d$: Delete to the end of the line
+u: Undo the last change
+ctrl+r: Redo the last undo
+yy: Yank (copy) the current line
+yw: Yank (copy) the word
+p: Paste after the cursor
+P: Paste before the cursor
+
+Visual Mode Commands
+
+v: Start visual mode
+V: Start visual line mode
+ctrl+v: Start visual block mode
+y: Yank (copy) the selected text
+d: Delete the selected text
+~: Switch case (upper/lower) of the selected text
+>: Indent the selected text
+<: Unindent the selected text
+
+Command Mode (accessed by pressing :)
+
+:w: Write (save) the file
+:q: Quit
+:wq or ZZ: Write and quit
+:q!: Quit without saving
+:e filename: Open filename
+:bd: Close the current buffer
+:sp filename: Open filename in a new horizontal split
+:vsp filename: Open filename in a new vertical split
+:help: Open Vim help
+Search and Replace
+/pattern: Search for pattern
+?pattern: Search backward for pattern
+n: Move to the next match
+N: Move to the previous match
+:%s/old/new/g: Replace all occurrences of old with new in the file
+:%s/old/new/gc: Replace all occurrences of old with new in the file with confirmation
+
+Window Management
+
+ctrl+w s: Split window horizontally
+ctrl+w v: Split window vertically
+ctrl+w w: Switch to the next window
+ctrl+w q: Quit a window
+ctrl+w c: Close the current window
+
+Miscellaneous
+
+:set number: Show line numbers
+:set nonumber: Hide line numbers
+:set relativenumber: Show relative line numbers
+:set norelativenumber: Hide relative line numbers
+:set paste: Enable paste mode
+:set nopaste: Disable paste mode
+

@@ -1,0 +1,3 @@
+--2024-07-31 21:40:52--  https://github.com/llvm/llvm-project/releases/download/llvmorg-12.0.0/clang+llvm-12.0.0-aarch64-linux-gnu.tar.xz
+Resolving github.com (github.com)... failed: No address associated with hostname.
+wget: unable to resolve host address ‘github.com’
