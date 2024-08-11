@@ -34,4 +34,4 @@ rl.question('Input height for chessboard: ', (height) =>{
 
 rl.close();});
 });
-/* I was so excited completing this code. I decided not to uuse concepts beyond loops, such as arrays and it totally worked out perfectly. I had a lot of fund figuring out how to print my chessboard of a height not divisible by 2, since I used two separate variables to store 1 line and 2 line and then repeating those two, I always ended up with one extra line when my height is an odd number, but not anymore!!*/
+/* I was so excited completing this exercise. I decided not to use concepts beyond loops, such as arrays and it totally worked out perfectly. I had a lot of fund figuring out how to print my chessboard of a height not divisible by 2, since I used two separate variables to store 1st and 2nd line and then repeating those two. I always ended up with one extra line when my height is an odd number, but not anymore!!*/
