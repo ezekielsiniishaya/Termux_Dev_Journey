@@ -17,7 +17,6 @@ int main()
  } 
 if (max > 0) /* there was a line */ 
  printf("Longest Input: %s\n", longest);
-printf("Number of lines: %s\n", line);
 return 0; 
 } 
  /* getline: read a line into s, return length */ 
