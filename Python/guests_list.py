@@ -25,6 +25,7 @@ while k < 11:
     print(f'You are invited to my wedding, {guests[k]}.')
     k += 1
 print('Unfortunately, Dinner available is for only 2 people')
+print(f'I am inviting {len(guests)} guests.')
 #Removing items from lists in batch, from end of lists until only first two remaining and printing the removed item as they are removed
 
 l = 10
