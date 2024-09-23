@@ -1,0 +1,46 @@
+
+<!-- Add User Form -->
+<form action="/add" method="POST" class="mb-5">
+    <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Add User</button>
+</form>
+
+<!-- Display Users -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% users.forEach(function(user) { %>
+            <tr>
+                <td><%= user.id %></td>
+                <td><%= user.name %></td>
+                <td><%= user.email %></td>
+                <td>
+                    <!-- Edit Form -->
+                    <form action="/edit/<%= user.id %>" method="POST" style="display:inline-block;">
+                        <input type="text" name="name" value="<%= user.name %>" required>
+                        <input type="email" name="email" value="<%= user.email %>" required>
+                        <button type="submit" class="btn btn-warning btn-sm">Edit</button>
+                    </form>
+
+                    <!-- Delete Button -->
+                    <a href="/delete/<%= user.id %>" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        <% }); %>
+    </tbody>
+</table>
+
