@@ -1,12 +1,13 @@
 function countChar(String, c) {
-    let i = 0, j = 0
-    while(i < String.length) {
-        if (String[i] == c) {
-            j++
-        }
-        i++
+  let i = 0,
+    j = 0;
+  while (i < String.length) {
+    if (String[i] == c) {
+      j++;
     }
-    return j
+    i++;
+  }
+  return j;
 }
 
-console.log(countChar("Behavhe", "h"))
+console.log(countChar("Beehive", "e"));
