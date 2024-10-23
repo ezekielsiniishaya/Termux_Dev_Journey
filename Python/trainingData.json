@@ -1,0 +1,32 @@
+[
+  {
+    "text": ["hello", "hi", "hey"],
+    "category": "greeting",
+    "response": "Hello! How can I assist you today?"
+  },
+  {
+    "text": ["what is your favorite food", "do you like food"],
+    "category": "favorite_food",
+    "response": "I don't eat, but I've heard pizza is quite popular!"
+  },
+  {
+    "text": ["what is your name", "who are you"],
+    "category": "introduction",
+    "response": "I'm an AI assistant, here to help you with any questions!"
+  },
+  {
+    "text": ["how are you", "what's up"],
+    "category": "small_talk",
+    "response": "I'm doing well, thanks for asking! How about you?"
+  },
+  {
+    "text": ["goodbye", "bye", "see you later"],
+    "category": "farewell",
+    "response": "Goodbye! It was nice chatting with you."
+  },
+  {
+    "text": ["thank you", "thanks"],
+    "category": "gratitude",
+    "response": "You're welcome! I'm happy to help."
+  }
+]

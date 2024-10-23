@@ -1,61 +1,124 @@
 [
   {
-    "text": ["hello", "hi", "hey"],
+    "text": [
+      "hello",
+      "hi",
+      "Hello",
+      "Hey",
+      "hey",
+      "good morning",
+      "good afternoon",
+      "good evening"
+    ],
     "category": "greeting",
     "response": "Hello! How can I assist you today?"
   },
   {
-    "text": ["what is your favorite food", "do you like food"],
+    "text": [
+      "what is your favorite food",
+      "do you like food",
+      "what do you eat",
+      "what's your favorite meal"
+    ],
     "category": "favorite_food",
     "response": "I don't eat, but I've heard pizza is quite popular!"
   },
   {
-    "text": ["what is your name", "who are you"],
+    "text": [
+      "what is your name",
+      "who are you",
+      "what should I call you",
+      "can you tell me your name"
+    ],
     "category": "introduction",
     "response": "I'm an AI assistant, here to help you with any questions!"
   },
   {
-    "text": ["how are you", "what's up"],
+    "text": [
+      "how are you",
+      "what's up",
+      "how are you doing",
+      "how have you been"
+    ],
     "category": "small_talk",
     "response": "I'm doing well, thanks for asking! How about you?"
   },
   {
-    "text": ["what can you do", "help"],
+    "text": [
+      "what can you do",
+      "help",
+      "what are your abilities",
+      "how can you assist me",
+      "what are you capable of"
+    ],
     "category": "capabilities",
     "response": "I can answer questions, provide information, and chat with you!"
   },
   {
-    "text": ["goodbye", "bye", "see you later"],
+    "text": ["goodbye", "bye", "see you later", "talk to you soon", "farewell"],
     "category": "farewell",
     "response": "Goodbye! It was nice chatting with you."
   },
   {
-    "text": ["thank you", "thanks"],
+    "text": [
+      "thank you",
+      "thanks",
+      "I appreciate it",
+      "much obliged",
+      "thanks a lot"
+    ],
     "category": "gratitude",
     "response": "You're welcome! I'm happy to help."
   },
   {
-    "text": ["how old are you", "what's your age"],
+    "text": [
+      "how old are you",
+      "what's your age",
+      "when were you created",
+      "how long have you been around"
+    ],
     "category": "personal_info",
     "response": "I'm an AI, I don't have an age!"
   },
   {
-    "text": ["where are you from", "what's your location"],
+    "text": [
+      "where are you from",
+      "what's your location",
+      "where do you live",
+      "what country are you from"
+    ],
     "category": "personal_info",
     "response": "I'm a virtual AI assistant, I don't have a physical location."
   },
   {
-    "text": ["what's the weather like", "how's the weather"],
+    "text": [
+      "what's the weather like",
+      "how's the weather",
+      "is it raining",
+      "what's today's weather",
+      "is it sunny outside"
+    ],
     "category": "weather",
     "response": "I don't have real-time access to weather information, but I can suggest checking a weather app!"
   },
   {
-    "text": ["tell me a joke", "make me laugh"],
+    "text": [
+      "tell me a joke",
+      "make me laugh",
+      "say something funny",
+      "give me a joke",
+      "make me smile"
+    ],
     "category": "humor",
     "response": "Why did the bicycle fall over? Because it was two-tired!"
   },
   {
-    "text": ["what's the definition of [word]", "define [word]"],
+    "text": [
+      "what's the definition of [word]",
+      "define [word]",
+      "what does [word] mean",
+      "meaning of [word]"
+    ],
     "category": "dictionary",
     "response": "I can define words for you. What word would you like me to define?"
   }

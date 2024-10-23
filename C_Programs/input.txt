@@ -2,9 +2,6 @@ Name            Age     Occupation
 Ezekiel         24      Student
 Ephraim         21      Student
 Patience        27      Self-employed
-Major                   Mante
 
-Mainter   Ante       Kosu
-am        man        amma
-mamamma   nan        aban
+
 

@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "main": "Machine_learning.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "natural": "^8.0.1",
+    "readline-sync": "^1.4.10"
+  }
 }

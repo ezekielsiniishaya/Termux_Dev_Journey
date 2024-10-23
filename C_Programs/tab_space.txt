@@ -2,3 +2,4 @@ Name            Age     Occupation
 Ezekiel         24      Student
 Ephraim         20      Student
 Patience        27      Self employed
+          
