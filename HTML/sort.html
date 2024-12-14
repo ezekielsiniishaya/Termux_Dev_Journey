@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selection Sort Algorithm Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        canvas {
+            border: 1px solid black;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align: center;">Selection Sort Visualization</h1>
+    <canvas id="canvas" width="800" height="800"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Function to display the array on the canvas
+        function displayArray(array, startX, startY) {
+            ctx.font = '12px monospace';
+            ctx.fillStyle = 'black';
+            for (let i = 0; i < array.length; i++) {
+                ctx.fillText(array[i], startX + i * 50, startY); // Position each element horizontally
+            }
+        }
+
+        // Function to swap elements in the array and draw a line for visualization
+        function swap(array, firstIndex, secondIndex, startX, startY, step) {
+            const x1 = startX + firstIndex * 50 + 4;  // Position of the first element
+            const x2 = startX + secondIndex * 50 + 4; // Position of the second element
+            const y = startY + step * 40 + 20;  // Vertical position for each step
+
+            ctx.strokeStyle = 'red';  // Red color for the swap line
+            ctx.beginPath();
+            ctx.moveTo(x1, y + 5); // Start at the first element
+            ctx.lineTo(x2, y - 10);  // Draw a line to the second element
+            ctx.stroke();
+
+            // 3. Create a function, swap that swaps the minimum values with the 0, 1, 2 and so on
+
+            // Temporarily storing the value on at the first index before replacing it with the value at the second index
+            var temp = array[firstIndex];
+
+            // The swapping logic
+            array[firstIndex] = array[secondIndex];
+            array[secondIndex] = temp;
+
+        }
+
+        // Function to find the index of the minimum element in the unsorted part of the array
+        var indexOfMinimum = function (array, startIndex) {
+            var minIndex = startIndex;
+            var minValue = array[startIndex];
+            for (var i = minIndex + 1; i < array.length; i++) {
+                if (array[i] < array[minIndex]) {
+                    minIndex = i;
+                    minValue = array[i];
+                }
+            }
+            return minIndex;
+        };
+
+        // Selection Sort Algorithm with visualization
+        async function selectionSort(array, startX, startY) {
+            for (let i = 0; i < array.length; i++) {
+                const min = indexOfMinimum(array, i);
+
+                // Display the current state of the array
+                displayArray(array, startX, startY + i * 40);
+
+                // Swap elements and draw swap lines
+                swap(array, i, min, startX, startY, i);
+
+                // Pause for a moment to visualize the swap
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+
+            // Final render of the sorted array
+            displayArray(array, startX, startY + array.length * 40);
+        }
+
+        // Example arrays to visualize
+        const array1 = [22, 11, 99, 88, 9, 7, 42];
+        const array2 = [99, 88, 42, 22, 11, 9, 7];
+        const array3 = [11, 28, 19, 27, 11, 19, 11];
+        const array4 = [1, 2, 3, 5, 4, 6, 7];
+
+        // Set up the canvas background and initiate the sorting visualizations
+        function startVisualization() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+
+            // Call selectionSort for each array in different quadrants
+            selectionSort(array1, 20, 50); // Top-left quadrant
+            selectionSort(array2, 400, 50); // Top-right quadrant
+            selectionSort(array3, 20, 400); // Bottom-left quadrant
+            selectionSort(array4, 400, 400); // Bottom-right quadrant
+        }
+
+        // Start the visualization after loading the page
+        window.onload = startVisualization;
+    </script>
+</body>
+
+</html>

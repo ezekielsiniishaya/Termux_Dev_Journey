@@ -12,8 +12,11 @@ while True:
         
         # Check if the entered keyword exists in the dictionary
         if keyword in data:
-            print(f"{keyword}: {data[keyword][0]}")  # Print the meaning of the keyword
+            print(f"{keyword}:")
+            for meaning in data[keyword]:
+                print(meaning)
 
+            
         else:
             start = True  # Initialize a flag to track if suggestions are being displayed
             # Iterate over all words and meanings in the dictionary

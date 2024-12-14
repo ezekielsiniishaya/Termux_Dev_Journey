@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Html Canvas Practise</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        canvas {
+            border: 1px solid black;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align: center;">Html Canvas Practise</h1>
+    <canvas id="canvas" width="1000" height="700"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        ctx.fillStyle = 'blue';
+        ctx.fillRect(50, 50, 100, 50); // Filled rectangle
+
+        ctx.strokeStyle = 'red';
+        ctx.strokeRect(200, 50, 100, 50); // Outlined rectangle
+
+        ctx.clearRect(55, 76, 36, 19); // Clears a section of a triangle
+
+        ctx.beginPath();
+        ctx.moveTo(50, 50); // Start point
+        ctx.lineTo(150, 100); // Draw to this point
+        ctx.stroke(); // Render the line
+
+        ctx.strokeStyle = 'blue';
+        ctx.beginPath();
+        ctx.moveTo(200, 100); // Start point
+        ctx.lineTo(300, 50); // Draw to this point
+        ctx.stroke(); // Render the line
+
+        ctx.beginPath();
+        ctx.arc(100, 200, 50, 0, 360); // Full circle
+        ctx.fillStyle = 'pink';
+        ctx.fill();
+        ctx.stroke();
+
+        // ellipse
+        ctx.strokeStyle = 'brown';
+        ctx.beginPath();
+        ctx.ellipse(250, 200, 60, 40, 0, 0, 360);
+        ctx.fillStyle = 'whitesmoke';
+        ctx.fill();
+        ctx.stroke();
+        // Draw an arc
+        ctx.beginPath();
+        ctx.arc(250, 100, 50, 0, Math.PI); // x, y, radius, startAngle, endAngle
+        ctx.fillStyle = 'purple';
+        //ctx.fill();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(100, 300); // Start point
+        ctx.lineTo(150, 400); // Second point
+        ctx.lineTo(50, 400); // Third point
+        ctx.closePath(); // Close the shape
+        ctx.fillStyle = 'beige';
+        ctx.fill();
+        ctx.stroke();
+        // Quadratic Curve
+        ctx.beginPath();
+        ctx.moveTo(200, 300);
+        ctx.quadraticCurveTo(250, 500, 300, 300); // Control point and end point
+        ctx.stroke();
+
+        // Berzier Curve
+        ctx.beginPath();
+        ctx.moveTo(50, 500);
+        ctx.bezierCurveTo(250, 400, 300, 600, 500, 500); // Control points and end point
+        ctx.stroke();
+
+        // Text
+        ctx.font = '20px Arial';
+        ctx.fillStyle = 'green';
+        ctx.fillText('Hello, Canvas!', 350, 65);
+
+        ctx.strokeStyle = 'blue';
+        ctx.strokeText('Outlined Text', 350, 100);
+
+        // Image
+        const img = new Image();
+        img.src = 'profile.jpg';
+        img.onload = function () {
+            ctx.drawImage(img, 350, 200, 200, 200);
+        };
+
+        // Custom Shapes
+        ctx.beginPath();
+        ctx.moveTo(50, 550); // Start point
+        ctx.lineTo(100, 600); // Line
+        ctx.lineTo(150, 550); // Close back
+        ctx.arcTo(80, 0, 50, 550, 50); // Curved line
+        ctx.closePath();
+        ctx.strokeStyle = 'red';
+        ctx.stroke();
+        ctx.fillStyle = 'purple';
+        ctx.fill();
+        const gradient = ctx.createLinearGradient(200, 550, 350, 550);
+        gradient.addColorStop(0, 'red');
+        gradient.addColorStop(1, 'blue');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(200, 550, 200, 100);
+        const gradient2 = ctx.createRadialGradient(500, 650, 20, 500, 650, 150);
+        gradient2.addColorStop(0, 'red');
+        gradient2.addColorStop(1, 'blue');
+        ctx.fillStyle = gradient2;
+        ctx.fillRect(500, 550, 200, 100);
+        const img2 = new Image();
+        img2.src = 'logo21.png';
+        img2.onload = function () {
+            const pattern = ctx.createPattern(img2, 'repeat');
+            ctx.fillStyle = pattern;
+            ctx.fillRect(600, 50, 300, 150);
+        };
+
+
+
+    </script>
+</body>
+
+</html>

@@ -13,3 +13,4 @@ price = float(input("Enter the Prince: "))
 discount_percent = float(input("Enter the discount: "))
 #print(type(discount_percent))
 calculate_discount(price, discount_percent)
+
