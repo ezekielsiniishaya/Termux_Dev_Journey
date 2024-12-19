@@ -13,6 +13,7 @@ var insert = function (array, rightIndex, value) {
 var insertionSort = function (array) {
   for (var i = 1; i < array.length; i++) {
     insert(array, i - 1, array[i]);
+    console.log(array);
   }
 };
 
