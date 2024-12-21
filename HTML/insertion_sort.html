@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insertion Sort</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        canvas {
+            border: 1px solid black;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align: center;">Insertion Sort Visualization</h1>
+    <canvas id="canvas" width="610" height="910"></canvas>
+
+    <script>
+        // Getting the canvas to my JavaScript program so I can manipulate it
+        const canvas = document.getElementById('canvas');
+        ctx = canvas.getContext('2d');
+        // This is a program that uses insertion sort to sort an array
+        // Function to display text on the canvas
+
+        var displayArray = function (array, startX, startY) {
+            ctx.font = '16px Arial';
+            ctx.fillStyle = 'green';
+            for (var i = 0; i < array.length; i++) {
+                ctx.fillText(array[i], startX + i * 30, startY);
+            }
+        }
+        // This fuction inserts a value in a particular position in an array when some conditions are met
+        var insert = function (array, rightIndex, value, startX, startY, step) {
+            var i;
+            //console.log(rightIndex);
+            var step;
+            for (i = rightIndex; i >= 0 && array[i] > value; i--) {
+
+                array[i + 1] = array[i];
+                //console.log(i);
+            }
+            array[i + 1] = value;
+
+            //console.log(rightIndex);
+            var x1 = startX + rightIndex * 30 + 37;
+            var x2 = startX + i * 30 + 37;
+            y = step - 30;
+            ctx.strokeStyle = 'blue';
+            ctx.beginPath();
+            ctx.moveTo(x1, y - 5);
+            ctx.lineTo(x2, y + 10);
+            ctx.stroke();
+
+        };
+        // This function loops through the array inserting the current value in the right position in the sorted subarray
+        var insertionSort = function (array, startX, startY) {
+            displayArray(array, startX, startY);
+            for (var i = 1; i < array.length; i++) {
+
+                insert(array, i - 1, array[i], startX, startY, startY + i * 40);
+
+                displayArray(array, startX, startY + i * 40);
+            }
+        };
+
+        var array = [13, 15, 17, 11, 13, 2, 9, 6];
+        var array2 = [113, 115, 127, 211, 113, 22, 29, 36];
+
+
+        console.log(JSON.stringify(array));
+        console.log(JSON.stringify(array2));
+        insertionSort(array, 50, 100);
+        insertionSort(array2, 350, 70);
+        console.log(JSON.stringify(array));
+        console.log(JSON.stringify(array2));
+
+
+
+
+    </script>
+</body>
+
+</html>
