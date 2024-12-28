@@ -1,78 +1,62 @@
 #include <stdio.h>
 
-#define MAXCOL 5 // The maximum column before folding
-#define TABINC 8 // The tab increment size
+#define MAXCOL 40                           /* folded line length */
+#define TABVAL 8                            /* standard tab length */
+#define CURTAB(c) (TABVAL - ((c) % TABVAL)) /* current tab size */
+#define NO_BLANK -1                         /* signifies no blank found */
 
-void print_line(char line[], int length);
-int find_last_blank(char line[], int max);
-void fold_line(char line[], int len);
+/* finds the last whitespace character in an array
+   and returns the position */
+int lastblank(const char arr[], int len) {
+  int i, lbc;
 
-int main()
-{
-    int c, pos = 0;
-    char line[MAXCOL + 1];
+  lbc = -1;
+  for (i = 0; i < len; ++i)
+    if (arr[i] == ' ' || arr[i] == '\t' || arr[i] == '\n') lbc = i;
 
-    while ((c = getchar()) != EOF)
-    {
-        line[pos] = c;
-        if (c == '\n')
-        {
-            print_line(line, pos);
-            pos = 0;
-            putchar('\n');
-        }
-        else if (pos >= MAXCOL)
-        {
-            fold_line(line, pos);
-            pos = 0;
-            if (c != ' ' && c != '\t')
-            {
-                // Start the new line with the current character if it's not a space or tab
-                line[pos++] = c;
-            }
-        }
-        else
-        {
-            pos++;
-        }
-    }
-
-    return 0;
+  return lbc;
 }
 
-void print_line(char line[], int length)
-{
-    for (int i = 0; i < length; i++)
-    {
-        putchar(line[i]);
-    }
-}
+/* folds long input lines into two or more shorter lines */
+int main(void) {
+  int c;                 /* character variable */
+  int i, j;              /* indexing variable(s) */
+  int pos;               /* current position in array */
+  int col;               /* current column of output */
+  int lbc;               /* last blank character position */
+  char line[MAXCOL + 1]; /* fold array */
 
-int find_last_blank(char line[], int max)
-{
-    for (int i = max; i >= 0; i--)
-    {
-        if (line[i] == ' ' || line[i] == '\t')
-        {
-            return i;
+  pos = col = 0;
+  while ((c = getchar()) != EOF) {
+    /* process line array, keep track of line length by columns */
+    line[pos++] = c;
+    col += (c == '\t') ? CURTAB(col) : 1;
+
+    /* create fold */
+    if (col >= MAXCOL || c == '\n') {
+      line[pos] = '\0';
+
+      if ((lbc = lastblank(line, pos)) == NO_BLANK) {
+        /* split word if no blank characters */
+        for (i = 0; i < pos; ++i) putchar(line[i]);
+        /* reset column value and array position */
+        col = pos = 0;
+      } else {
+        /* print array up until last blank character */
+        for (i = 0; i < lbc; ++i) putchar(line[i]);
+        /* feed remaining characters into buffer */
+        for (i = 0, j = lbc + 1, col = 0; j < pos; ++i, ++j) {
+          line[i] = line[j];
+          /* set new column value */
+          col += (c == '\t') ? CURTAB(col) : 1;
         }
+        /* set array position after remaining characters */
+        pos = i;
+      }
+      /* finish folded line with newline character */
+      putchar('\n');
     }
-    return -1;
-}
+  }
 
-void fold_line(char line[], int len)
-{
-    int last_blank = find_last_blank(line, len - 1);
-
-    if (last_blank >= 0)
-    {
-        print_line(line, last_blank);
-        putchar('\n');
-        print_line(&line[last_blank + 1], len - last_blank - 1);
-    }
-    else
-    {
-        print_line(line, len);
-        putchar('\n');
-    }
+  return 0;
 }
