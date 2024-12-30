@@ -1,3 +1,5 @@
+// This is a program that folds long lines of input based on the specified maximum number of column
+
 #include <stdio.h>
 
 #define MAXCOL 20                           /* folded line length */
@@ -5,58 +7,92 @@
 #define CURTAB(c) (TABVAL - ((c) % TABVAL)) /* current tab size */
 #define NO_BLANK -1                         /* signifies no blank found */
 
-/* finds the last whitespace character in an array
-   and returns the position */
-int lastblank(const char arr[], int len) {
-  int i, lbc;
-
-  lbc = -1;
-  for (i = 0; i < len; ++i)
-    if (arr[i] == ' ' || arr[i] == '\t' || arr[i] == '\n') lbc = i;
-
-  return lbc;
+/* Function to find the last whitespace character in an array */
+int find_last_blank(const char line[], int length)
+{
+  for (int i = length - 1; i >= 0; i--)
+  {
+    if (line[i] == ' ' || line[i] == '\t' || line[i] == '\n')
+    {
+      return i; /* Return the position of the last blank or tab */
+    }
+  }
+  return NO_BLANK;
 }
 
-/* folds long input lines into two or more shorter lines */
-int main(void) {
-  int c;                 /* character variable */
-  int i, j;              /* indexing variable(s) */
-  int pos;               /* current position in array */
-  int col;               /* current column of output */
-  int lbc;               /* last blank character position */
-  char line[MAXCOL + 1]; /* fold array */
+/* Function to print the current line up to a given length */
+void print_line(const char line[], int length)
+{
+  for (int i = 0; i < length; i++)
+  {
+    putchar(line[i]);
+  }
+}
 
-  pos = col = 0;
-  while ((c = getchar()) != EOF) {
-    /* process line array, keep track of line length by columns */
+/* Function to fold a line at the last blank before the max column */
+int fold_line(char line[], int pos, int col)
+{
+  int last_blank = find_last_blank(line, pos);
+
+  if (last_blank != NO_BLANK)
+  {
+    /* Fold line at the last blank */
+    print_line(line, last_blank);
+    putchar('\n'); /* Start a new line */
+
+    /* Move remaining characters to the buffer */
+    int i, j;
+    for (i = 0, j = last_blank + 1; j < pos; ++i, ++j)
+    {
+      line[i] = line[j];
+    }
+    return i; /* Return updated position in buffer */
+  }
+  else
+  {
+    /* If no blank found, print the line as it is */
+    print_line(line, pos);
+    putchar('\n'); /* Start a new line */
+    return 0;      /* Reset buffer */
+  }
+}
+
+/* Function to process each character and fold lines when necessary */
+void process_input(void)
+{
+  int c;                 /* Current character */
+  int pos = 0;           /* Current position in array */
+  int col = 0;           /* Current column in the output */
+  char line[MAXCOL + 1]; /* Buffer to hold characters before folding */
+
+  while ((c = getchar()) != EOF)
+  {
+    /* Add character to buffer and track column */
     line[pos++] = c;
     col += (c == '\t') ? CURTAB(col) : 1;
 
-    /* create fold */
-    if (col >= MAXCOL || c == '\n') {
-      line[pos] = '\0';
-
-      if ((lbc = lastblank(line, pos)) == NO_BLANK) {
-        /* split word if no blank characters */
-        for (i = 0; i < pos; ++i) putchar(line[i]);
-        /* reset column value and array position */
-        col = pos = 0;
-      } else {
-        /* print array up until last blank character */
-        for (i = 0; i < lbc; ++i) putchar(line[i]);
-        /* feed remaining characters into buffer */
-        for (i = 0, j = lbc + 1, col = 0; j < pos; ++i, ++j) {
-          line[i] = line[j];
-          /* set new column value */
-          col += (c == '\t') ? CURTAB(col) : 1;
-        }
-        /* set array position after remaining characters */
-        pos = i;
+    /* Check if line needs folding */
+    if (col >= MAXCOL || c == '\n')
+    {
+      pos = fold_line(line, pos, col); /* Fold the line */
+      col = 0;
+      for (int i = 0; i < pos; ++i)
+      {
+        col += (line[i] == '\t') ? CURTAB(col) : 1; /* Recalculate column */
       }
-      /* finish folded line with newline character */
-      putchar('\n');
     }
   }
 
+  /* Process leftover characters in the buffer after EOF */
+  if (pos > 0)
+  {
+    print_line(line, pos); /* Print remaining characters */
+    putchar('\n');         /* Add newline for consistency */
+  }
+}
+
+int main(void)
+{
+  process_input(); /* Start processing the input */
   return 0;
 }
