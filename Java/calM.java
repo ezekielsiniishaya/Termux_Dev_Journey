@@ -1,7 +1,7 @@
 
 import java.util.Scanner;
 
-public class Compute {
+public class calM {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
