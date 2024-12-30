@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define MAXCOL 40                           /* folded line length */
+#define MAXCOL 20                           /* folded line length */
 #define TABVAL 8                            /* standard tab length */
 #define CURTAB(c) (TABVAL - ((c) % TABVAL)) /* current tab size */
 #define NO_BLANK -1                         /* signifies no blank found */
