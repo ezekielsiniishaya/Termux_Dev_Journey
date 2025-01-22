@@ -1,54 +1,38 @@
-//code to remove space, tabs ans new lines from inputs
 #include <stdio.h>
 
-#define MAXLEN 100
-//functions
-void get_char(char array_1[]);
-void edit_char(char array_1[], char array_2[]);
-void print_char(char array_2[]);
+#define MAX_ROWS 5
+#define MAX_COLUMNS 10
 
 int main() {
-    //array to store inputs
-    char array_1[MAXLEN];
-    //array to store modified inputs
-    char array_2[MAXLEN];
-    int c;
-    //calling all functions in main function for execution
-    while ((c = getchar()) != EOF) {
-        get_char(array_1);
-        edit_char(array_1, array_2);
-        print_char(array_2);
+  char array_2D[MAX_ROWS][MAX_COLUMNS];
+  int i,
+  j;
+
+  printf("Enter %d lines of sentences (each line up to %d characters):\n", MAX_ROWS, MAX_COLUMNS - 1);
+
+  for (i = 0; i < MAX_ROWS; i++) {
+    printf("Line %d: ", i + 1);
+    j = 0;
+    while (j < MAX_COLUMNS - 1) {
+      char ch = getchar();
+      if (ch == '\n') {
+        array_2D[i][j++] = ch;
+        break;
+      }
+      array_2D[i][j++] = ch;
     }
+    array_2D[i][j] = '\0'; // Null-terminate the string
+  }
 
-    return 0;
-}
-
-// Get characters from stdin and store in array_1[]
-void get_char(char array_1[]) {
-    int i = 0;
-    int c;
-
-    while ((c = getchar()) != EOF) {
-        array_1[i++] = c;
+  printf("\nYou entered:\n");
+  for (i = 0; i < MAX_ROWS; i++) {
+    j = 0;
+    while (array_2D[i][j] != '\0') {
+      putchar(array_2D[i][j]);
+      j++;
     }
-    array_1[i] = '\0'; // Null-terminate the string
-}
+    //putchar('\n');
+  }
 
-// Edit characters in array_1[], remove spaces, tabs, and newlines, and store in array_2[]
-void edit_char(char array_1[], char array_2[]) {
-    int i = 0;
-    int j = 0;
-
-    while (array_1[i] != '\0') {
-        if (array_1[i] != ' ' && array_1[i] != '\t' && array_1[i] != '\n') {
-            array_2[j++] = array_1[i];
-        }
-        i++;
-    }
-    array_2[j] = '\0'; // Null-terminate the string
-}
-
-// Print characters in array_2[]
-void print_char(char array_2[]) {
-    printf("%s\n", array_2);
+  return 0;
 }
