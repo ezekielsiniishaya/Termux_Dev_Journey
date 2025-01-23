@@ -5,33 +5,31 @@
 
 int main() {
   char array_2D[MAX_ROWS][MAX_COLUMNS];
-  int i,
-  j;
+  int row, column;
 
   printf("Enter %d lines of sentences (each line up to %d characters):\n", MAX_ROWS, MAX_COLUMNS - 1);
 
-  for (i = 0; i < MAX_ROWS; i++) {
-    printf("Line %d: ", i + 1);
-    j = 0;
-    while (j < MAX_COLUMNS - 1) {
-      char ch = getchar();
-      if (ch == '\n') {
-        array_2D[i][j++] = ch;
+  for (row = 0; row < MAX_ROWS; row++) {
+    printf("Line %d: ", row + 1);
+    column = 0;
+    while (column < MAX_COLUMNS - 1) {
+      char character = getchar();
+      if (character == '\n') {
         break;
       }
-      array_2D[i][j++] = ch;
+      array_2D[row][column++] = character;
     }
-    array_2D[i][j] = '\0'; // Null-terminate the string
+    array_2D[row][column] = '\0';  // Null-terminate the string
   }
 
   printf("\nYou entered:\n");
-  for (i = 0; i < MAX_ROWS; i++) {
-    j = 0;
-    while (array_2D[i][j] != '\0') {
-      putchar(array_2D[i][j]);
-      j++;
+  for (row = 0; row < MAX_ROWS; row++) {
+    column = 0;
+    while (array_2D[row][column] != '\0') {
+      putchar(array_2D[row][column]);
+      column++;
     }
-    //putchar('\n');
+    putchar('\n');
   }
 
   return 0;
