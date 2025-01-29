@@ -1,9 +1,11 @@
-/* This program, somehow, successfully deletes a specified element from an array */
+/* This program, somehow, successfully deletes a specified element from an array
+ */
 #include <stdio.h>
 
 #define MAX_ROWS 5
 #define MAX_COLUMNS 10
-/* This function seems redundant but it returns the index of the element to be deleted */
+/* This function seems redundant but it returns the index of the element to be
+ * deleted */
 int find_index(char array[][MAX_COLUMNS], int row, int column) {
   if (array[row][column] == 'd') {
     return column;
@@ -11,7 +13,8 @@ int find_index(char array[][MAX_COLUMNS], int row, int column) {
 
   return -1;
 }
-/* Here is where the quirky behaviour happens. The char element is replaced with 1, which is not jn character format so it just gets ignored */
+/* Here is where the quirky behaviour happens. The char element is replaced with
+ * 1, which is not jn character format so it just gets ignored */
 void clear_array(char array[][MAX_COLUMNS]) {
   int i = 0;
   int column = 0;
@@ -41,7 +44,7 @@ int main() {
 
   printf(
       "Enter %d lines of sentences (each line up to %d characters). Word "
-      "must not start with letter d:\n",
+      "must not contain letter d:\n",
       MAX_ROWS, MAX_COLUMNS - 1);
 
   for (row = 0; row < MAX_ROWS; row++) {
@@ -56,6 +59,7 @@ int main() {
     }
     array_2D[row][column] = '\0';  // Null-terminate the string
   }
+
   clear_array(array_2D);
   print_array(array_2D);
   return 0;
