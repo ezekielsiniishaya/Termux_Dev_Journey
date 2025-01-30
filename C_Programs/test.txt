@@ -1,0 +1,24 @@
+#include <stdio.h>  // This is a single-line comment
+
+/* This is a
+   multi-line comment. It should be removed. */
+
+int main() {
+    printf("Hello, world! // This should stay\n"); // This should be removed
+    printf("A string with /* fake comment */ should not be removed\n");
+
+    char c = 'c';  // A character constant
+    char star = '*'; // Another character constant
+    char slash = '/'; /* Another comment */
+
+    /* Start of a comment
+       with multiple lines
+       and ending here */
+
+    int a = 5; // Variable declaration with a comment
+    int b = 10;
+    int sum = a + b; /* Adding two numbers */
+
+    printf("Sum is: %d\n", sum); // Print sum
+    return 0; /* End of program */
+}
