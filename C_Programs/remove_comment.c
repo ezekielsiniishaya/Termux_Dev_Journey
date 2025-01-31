@@ -3,8 +3,8 @@
 
 // Define constants for the maximum number of rows (lines) and columns
 // (characters per line) in the code array.
-#define MAX_ROWS 1000
-#define MAX_COLUMNS 1000
+#define MAX_ROWS 2000
+#define MAX_COLUMNS 2000
 
 // This function checks if a line starts with a comment ('//' or '#').
 // It returns:
@@ -136,6 +136,7 @@ void clear_array(char array[][MAX_COLUMNS], int row) {
   while (i < row) {
     character = find_comment_line(array, i);
     if (character == 2) {
+      printf("inline comment");
       start = find_quote(array, i);
       if (start != -1) {
         stop = find_second_quote(array, i, start);
@@ -161,6 +162,7 @@ void clear_array(char array[][MAX_COLUMNS], int row) {
       }
     }
     if (character == 1) {
+      printf("whole line comment");
       single = find_index_single(array, i, 0);
       multiple = find_index_multiple(array, i);
       if (single != -1) {
@@ -168,20 +170,22 @@ void clear_array(char array[][MAX_COLUMNS], int row) {
       }
       if (multiple != -1) {
         found = 1;
+        printf("found starting index at %d, %d", i, multiple);
         clear_multiple(array, i, multiple);
-      }
-      if (found != -1) {
-        for (int j = i; j < row; j++) {
-          second = find_second_index(array, j);
-          if (second != -1) {
-            array[i][0] = '\0';
-            break;
+
+        if (found != -1) {
+          for (int j = i; j < row; j++) {
+            second = find_second_index(array, j);
+            printf("second at %d,  %d", j, second);
+            if (second != -1) {
+              array[i][0] = '\0';
+              break;
+            }
+            array[j][0] = '\0';
             i++;
           }
-          array[i][0] = '\0';
-          i++;
+          found = -1;
         }
-        found = -1;
       }
     }
     i++;
@@ -208,11 +212,23 @@ void print_array(char array[][MAX_COLUMNS], int len) {
   printf("\nCode without comments:\n");
   for (int row = 0; row < len; row++) {
     int column = 0;
-    while (array[row][column] != '\0') {
-      putchar(array[row][column]);
-      column++;
+    int start = 1;
+    int check = find_blank_lines(array, row);
+    if (check != -1) {
+      start = 1;
     }
-    putchar('\n');
+    int check2 = find_blank_lines(array, row + 1);
+    if (check2 != -1) {
+      start = 1;
+    }
+    if (start != -1) {
+      while (array[row][column] != '\0') {
+        putchar(array[row][column]);
+        column++;
+      }
+      putchar('\n');
+      // start = -1;
+    }
   }
 }
 
