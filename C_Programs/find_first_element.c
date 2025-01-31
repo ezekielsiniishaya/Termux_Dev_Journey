@@ -1,53 +1,58 @@
 #include <stdio.h>
+
 #define MAX_ROWS 1000
 #define MAX_COLUMNS 1000
 
-int find_first_element(int array[][MAX_COLUMNS], int row)
+int find_first_element(int array[][MAX_COLUMNS], int total_rows)
 {
-    for (int i = 0; i < row; i++)
+    for (int i = 0; i < total_rows; i++)
     {
-        int column = 0;
-
-        if (array[i][column] != ' ' && array[row][column] != '\t')
+        for (int column = 0; column < MAX_COLUMNS; column++)
         {
-            return array[i][column];
+            if (array[i][column] != ' ' && array[i][column] != '\t' && array[i][column] != '\0')
+            {
+                return array[i][column]; // Return the first non-whitespace character
+            }
         }
-        return -1;
     }
+    return -1; // No valid character found
 }
+
 int main()
 {
-    int array_2D[MAX_ROWS][MAX_COLUMNS]; // 2D array to store code input
-    int row, column;
+    int array_2D[MAX_ROWS][MAX_COLUMNS] = {0}; // Initialize to prevent garbage values
+    int row = 0, column = 0;
     int exit_status = 0;
-    // Prompt the user to enter lines of code
-    printf(
-        "Enter %d lines of code (each line up to %d characters). All "
-        "comments will be cleared:\n",
-        MAX_ROWS, MAX_COLUMNS - 1);
-    for (row = 0; row < MAX_ROWS; row++)
+
+    printf("Enter lines of code (press Ctrl+Z and Enter to stop on Windows):\n");
+
+    while (row < MAX_ROWS)
     {
-        column = 0;
-        while (column < MAX_COLUMNS - 1)
+        char line[MAX_COLUMNS];
+        if (fgets(line, MAX_COLUMNS, stdin) == NULL) // Read a full line
         {
-            int character = getchar();
-            if (character == EOF)
-            {
-                exit_status = 1;
-                break;
-            }
-            if (character == '\n')
-            {
-                break;
-            }
-            array_2D[row][column++] = character;
+            break; // Stop on EOF
         }
-        array_2D[row][column] = '\0'; // Null-terminate the string
-        if (exit_status == 1)
+
+        // Store the input in array_2D
+        for (column = 0; line[column] != '\0' && column < MAX_COLUMNS - 1; column++)
         {
-            break;
+            array_2D[row][column] = line[column];
         }
+        array_2D[row][column] = '\0'; // Null-terminate
+        row++;
     }
-    int element = find_first_element(array_2D, 0);
-    putchar(element);
+
+    int element = find_first_element(array_2D, row);
+
+    if (element != -1)
+    {
+        printf("First non-whitespace character: %c\n", element);
+    }
+    else
+    {
+        printf("No valid character found.\n");
+    }
+
+    return 0;
 }
