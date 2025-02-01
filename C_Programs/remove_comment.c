@@ -7,24 +7,36 @@
 #define MAX_ROWS 2000
 #define MAX_COLUMNS 2000
 
-/* This function checks if a line starts with a ('/' or '#').
+/* This function checks if a line starts with a ('/', '#', or '*').
 It returns:
-  - 1 if the line starts with a / or #,
-  - 2 if it starts with any other non-whitespace character,
+  - 1 if the line starts with a /,
+  - 2 if it starts #,
+  - 3 if it starts *,
+  - 4 if it starts with any other non-whitespace character
   - -1 if the line is empty or contains only whitespace.
 */
-int find_comment_line(char array[][MAX_COLUMNS], int row)
+int find_character(char array[][MAX_COLUMNS], int row, int column)
 {
-  int column = 0;
   while (array[row][column] != '\0')
   {
     if (array[row][column] != ' ' && array[row][column] != '\t')
     {
-      if (array[row][column] == '/' || array[row][column] == '#')
+      if (array[row][column] == '/')
       {
         return 1;
       }
-      return 2;
+      else if (array[row][column] == '#')
+      {
+        return 2;
+      }
+      else if (array[row][column] == '*')
+      {
+        return 3;
+      }
+      else
+      {
+        return 4;
+      }
     }
     column++;
   }
@@ -160,16 +172,17 @@ void clear_array(char array[][MAX_COLUMNS], int row)
 {
   int i = 0;
   int character, single, multiple;
+  int column = 0;
   int second = -1, found = -1;
   int start, stop;
 
   while (i < row)
   {
     // Checks the first non-blank character of each line
-    character = find_comment_line(array, i);
+    character = find_character(array, i, column);
 
     // Line of code with strings
-    if (character == 2)
+    if (character == 4)
     {
       start = find_quote(array, i);
       if (start != -1)
@@ -187,7 +200,7 @@ void clear_array(char array[][MAX_COLUMNS], int row)
       // Line of code without strings
       else
       {
-        int colon = find_semi_colon(array, i);
+        int colon = 1; // find_semi_colon(array, i);
         if (colon != -1)
         {
           single = find_index_single(array, i, colon);
@@ -204,9 +217,8 @@ void clear_array(char array[][MAX_COLUMNS], int row)
         }
       }
     }
-
-    // Line starts with a comment or #
-    if (character == 1)
+    // Line starts with a #
+    if (character == 2)
     {
       // Check for single line or multiple line comment
       single = find_index_single(array, i, 0);
@@ -215,29 +227,43 @@ void clear_array(char array[][MAX_COLUMNS], int row)
       {
         clear_single(array, i, single);
       }
-      if (multiple != -1)
+      else if (multiple != -1)
       {
-        found = 1;
         clear_multiple(array, i, multiple);
+      }
+    }
+    // Line starts with a comment
+    if (character == 1)
+    {
+      int check = find_character(array, i, column + 1);
 
-        // clears the remaining comments of multiple line comments
-        if (found != -1)
+      // Check for single line or multiple line comment
+      if (check == 1)
+      {
+        clear_single(array, i, 0);
+      }
+      if (check == 3)
+      {
+        multiple = find_index_multiple(array, i);
+        if (multiple != -1)
         {
+          int k = multiple + 2;
           for (int j = i; j < row; j++)
           {
-            second = find_second_index(array, j, multiple + 2);
+            second = find_second_index(array, j, k);
             if (second != -1)
             {
-              array[i][0] = '\0';
+              array[j][0] = '\0';
               break;
             }
             array[j][0] = '\0';
             i++;
+            k = 0;
           }
-          found = -1;
         }
       }
     }
+
     i++;
   }
 }
@@ -269,11 +295,15 @@ void print_array(char array[][MAX_COLUMNS], int len)
     int column = 0;
     int start = -1;
     int check = find_blank_lines(array, row);
+    int check2;
     if (check != -1)
     {
       start = 1;
     }
-    int check2 = find_blank_lines(array, row + 1);
+    if ((row + 1) < len)
+    {
+      check2 = find_blank_lines(array, row + 1);
+    }
     if (check2 != -1)
     {
       start = 1;
