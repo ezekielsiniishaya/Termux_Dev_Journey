@@ -1,3 +1,4 @@
+
 // A simple calcultor program with a touch of creativity
 // This is a work in progress.
 
@@ -134,30 +135,41 @@ int main() {
       char current_char = input[i]; // Get the current character
 
       // If the character is a digit or a decimal point, it is part of a number
-      if (isdigit(current_char) || current_char == '.') {
+      if (current_char == '-' || current_char == '.') {
         current_number +=
             current_char; // Append the character to the current number
       }
       // If the character is an operator, store the current number and the
       // operator
-      else if (current_char == '+' || current_char == '-' ||
-               current_char == '*' || current_char == '/') {
+      else if (current_char == ' ') {
         if (!current_number.empty()) { // Only push number if it's not empty
-          number_array.push_back(std::stof(
-              current_number)); // Convert the number to float and store it
-          current_number =
-              ""; // Reset the temporary number string for the next number
+          if (is_number(current_number)) {
+            number_array.push_back(std::stof(
+                current_number)); // Convert the number to float and store it
+            current_number =
+                ""; // Reset the temporary number string for the next number
+          } else {
+            std::cout << "Number is not valid.\n";
+          }
         }
+      } else if (current_char == '+' || current_char == '-' ||
+                 current_char == '*' || current_char == '/') {
         operators_array.push_back(
             current_char); // Store the operator in the function array
       }
-      // Ignore any other characters (e.g., spaces)
+      // Ignore any other characters (e.g.,
+      // spaces)
     }
 
     // If there's a number left at the end of the input, store it
     if (!current_number.empty()) {
-      number_array.push_back(std::stof(
-          current_number)); // Convert the final number to float and store it
+      if (is_number(current_number)) {
+        number_array.push_back(
+            std::stof(current_number)); // Convert the final number to float
+                                        // and store it
+      } else {
+        std::cout << "Error: Number is not valid.\n";
+      }
     }
 
     // Check if the input ends with an operator, which is invalid
@@ -173,8 +185,7 @@ int main() {
           number_array,
           operators_array); // Perform the operations and show the result
     } else {
-      std::cout << "Error: Invalid input, at least one number and operator "
-                   "required.\n";
+      std::cout << "Error: Invalid input.\n";
     }
 
     // Reset the arrays for the next input

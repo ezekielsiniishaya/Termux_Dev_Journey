@@ -4,8 +4,6 @@
 #include <cstdio>
 #include <iostream> // Import standard input/output stream (std::cin, std::cout)
 #include <string>   // Import string manipulation utilities (std::string class)
-#include <typeinfo>
-#include <vector> // Import dynamic array functionality (std::vector container)
 
 /* Function to check if the input string is a valid number (including decimals)
   - Here, input is passed by reference, so we don't copy the entire string.
@@ -33,46 +31,38 @@ bool is_number(const std::string &input) {
 
   return true; // It's a valid number
 }
-
-int main() {
+std::string receive_input() {
   std::string input; // Variable to store the user input
-  std::cout
-      << "Enter input and press Enter to add to arrays.\nPress Ctrl D (Linux, "
-         "MacOs) or Ctrl Z (Windows) to exit.\n";
-  while (true) {
-    std::vector<float>
-        number_array; // Stores the numbers extracted from the input
-    std::vector<char>
-        operators_array; // Stores the operators extracted from the input
+  std::getline(std::cin, input);
+  return input;
+}
 
-    std::getline(std::cin,
-                 input); // Read the entire line of input from the user
-    std::cout << "input is " << input;
-    if (std::cin.eof()) { // Check for EOF (Ctrl+D or Ctrl+Z)
-      break;              // Exit the loop and terminate the program
-    }
+void process_input() {
+  std::string input = receive_input();
+  std::string current_word = "";
 
-    std::string current_number =
-        ""; // Temporary string to hold a number as it's being parsed
-    char current_char;
-    // std::cout << "\nadding to current_number\n";
-    // Loop through each character in the input
-    for (size_t i = 0; i < input.length(); i++) {
-      current_char = input[i]; // Get the current character
-      current_number += current_char;
-      if (current_char == ' ') {
-        std::cout << "current_number is" << current_number;
-        bool print = is_number(current_number);
-        if (print) {
-          std::cout << "You entered a number\n";
+  for (size_t i = 0; i <= input.length(); i++) {
+
+    char current_char = input[i];
+
+    current_word += current_char;
+    if (i == input.length() || input[i] == ' ') {
+      if (!current_word.empty()) {
+        current_word.pop_back();
+        if (is_number(current_word)) {
+          std::cout << " a number";
         }
-        current_number = "";
+        current_word = "";
       }
     }
-    if (is_number(current_number)) {
-      std::cout << "You entered a number\n";
-    };
   }
+}
+int main() {
+  std::cout << "Enter input and press Enter to add to arrays.\nPress Ctrl D "
+               "(Linux, "
+               "MacOs) or Ctrl Z (Windows) to exit.\n";
+  process_input();
+
   std::cout << "Program terminated\n";
   return 0; // Exit the program
 }
