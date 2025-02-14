@@ -106,6 +106,7 @@ void perform_operations(std::vector<float> &numbers,
   // Output the final result of the calculation
   std::cout << "Result: " << numbers[0] << std::endl;
 }
+<<<<<<< HEAD
 std::string receive_input() {
   std::string input; // Variable to store the user input
 <<<<<<< HEAD
@@ -126,27 +127,44 @@ std::string receive_input() {
   std::getline(std::cin, input);
   return input;
 }
+=======
+>>>>>>> parent of 24db31d (my simple calculator in c++)
 
-void process_input() {
+int main() {
+  std::string input; // Variable to store the user input
+  std::cout << "Welcome to eazynote calculator!\nEnter an expression (e.g., "
+               "100+222-21/5) and press Enter for result.\nPress Ctrl D (Linux, "
+               "MacOs) or Ctrl Z (Windows) to exit.\n";
   while (true) {
+<<<<<<< HEAD
 >>>>>>> 818cd0871f6776e24cbc3ed834cefd84a6e918eb
+=======
+    std::vector<float> number_array;   // Stores the numbers extracted from the input
+    std::vector<char> operators_array; // Stores the operators extracted from the input
+
+    std::getline(std::cin, input); // Read the entire line of input from the user
+
+>>>>>>> parent of 24db31d (my simple calculator in c++)
     if (std::cin.eof()) { // Check for EOF (Ctrl+D or Ctrl+Z)
       break;              // Exit the loop and terminate the program
     }
-    std::string input = receive_input(); // variable to store input
-    std::string current_word = "";       // variable to store read input without spaces
-    std::vector<float> number_array;     // Stores the numbers extracted from the input
-    std::vector<char> operators_array;   // Stores the operators extracted from the input
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     std::string current_number =
         ""; // Temporary string to hold a number as it's being parsed
 =======
     for (size_t i = 0; i <= input.length(); i++) {
 >>>>>>> 818cd0871f6776e24cbc3ed834cefd84a6e918eb
+=======
+    std::string current_number = ""; // Temporary string to hold a number as it's being parsed
+>>>>>>> parent of 24db31d (my simple calculator in c++)
 
-      char current_char = input[i];
+    // Loop through each character in the input
+    for (size_t i = 0; i < input.length(); i++) {
+      char current_char = input[i]; // Get the current character
 
+<<<<<<< HEAD
 <<<<<<< HEAD
       // If the character is a digit or a decimal point, it is part of a number
       if (isdigit(current_char) || current_char == '.') {
@@ -177,8 +195,24 @@ void process_input() {
         }
         current_word = "";
 >>>>>>> 818cd0871f6776e24cbc3ed834cefd84a6e918eb
+=======
+      // If the character is a digit or a decimal point, it is part of a number
+      if (isdigit(current_char) || current_char == '.') {
+        current_number += current_char; // Append the character to the current number
       }
+      // If the character is an operator, store the current number and the operator
+      else if (current_char == '+' || current_char == '-' || current_char == '*' || current_char == '/') {
+        if (!current_number.empty()) {                       // Only push number if it's not empty
+          number_array.push_back(std::stof(current_number)); // Convert the number to float and store it
+          current_number = "";                               // Reset the temporary number string for the next number
+        }
+        operators_array.push_back(current_char); // Store the operator in the function array
+>>>>>>> parent of 24db31d (my simple calculator in c++)
+      }
+      // Ignore any other characters (e.g., spaces)
+    }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     // If there's a number left at the end of the input, store it
     if (!current_number.empty()) {
@@ -189,6 +223,11 @@ void process_input() {
         current_word += current_char;
       }
 >>>>>>> 818cd0871f6776e24cbc3ed834cefd84a6e918eb
+=======
+    // If there's a number left at the end of the input, store it
+    if (!current_number.empty()) {
+      number_array.push_back(std::stof(current_number)); // Convert the final number to float and store it
+>>>>>>> parent of 24db31d (my simple calculator in c++)
     }
 
     // Check if the input ends with an operator, which is invalid
@@ -196,9 +235,10 @@ void process_input() {
                                   input.back() == '*' || input.back() == '/')) {
       std::cout << "Error: Expression cannot end with an operator.\n";
       continue; // Skip to the next input if the current one is invalid
-    } // Check if the input ends with an operator, which is invalid
+    }
 
     // Perform the operation if there are numbers and operators
+<<<<<<< HEAD
 <<<<<<< HEAD
     if (number_array.size() > 1) {
       perform_operations(
@@ -213,12 +253,20 @@ void process_input() {
     } else if (!(std::cin.eof())) {
       std::cout << "Error: Invalid input, same number of operators and numbers or operators missing.\n";
 >>>>>>> 818cd0871f6776e24cbc3ed834cefd84a6e918eb
+=======
+    if (number_array.size() > 1) {
+      perform_operations(number_array, operators_array); // Perform the operations and show the result
+    } else {
+      std::cout << "Error: Invalid input, at least one number and operator "
+                   "required.\n";
+>>>>>>> parent of 24db31d (my simple calculator in c++)
     }
 
     // Reset the arrays for the next input
     number_array.clear();
     operators_array.clear();
   }
+<<<<<<< HEAD
 <<<<<<< HEAD
 
   std::cout << "Program terminated.\n"; // Display when the program is
@@ -238,4 +286,9 @@ int main() {
   std::cout << "GoodBye!\n";
   return 0; // Exit the program
 >>>>>>> 818cd0871f6776e24cbc3ed834cefd84a6e918eb
+=======
+
+  std::cout << "Program terminated.\n"; // Display when the program is terminated by EOF
+  return 0;                             // Exit the program
+>>>>>>> parent of 24db31d (my simple calculator in c++)
 }
