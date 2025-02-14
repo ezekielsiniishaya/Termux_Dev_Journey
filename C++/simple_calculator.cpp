@@ -106,9 +106,9 @@ void perform_operations(std::vector<float> &numbers,
   // Output the final result of the calculation
   std::cout << "Result: " << numbers[0] << std::endl;
 }
-
-int main() {
+std::string receive_input() {
   std::string input; // Variable to store the user input
+<<<<<<< HEAD
   std::cout
       << "Welcome to eazynote calculator!\nEnter an expression (e.g., "
          "100+222-21/5) and press Enter for result.\nPress Ctrl D (Linux, "
@@ -122,17 +122,32 @@ int main() {
     std::getline(std::cin,
                  input); // Read the entire line of input from the user
 
+=======
+  std::getline(std::cin, input);
+  return input;
+}
+
+void process_input() {
+  while (true) {
+>>>>>>> 818cd0871f6776e24cbc3ed834cefd84a6e918eb
     if (std::cin.eof()) { // Check for EOF (Ctrl+D or Ctrl+Z)
       break;              // Exit the loop and terminate the program
     }
+    std::string input = receive_input(); // variable to store input
+    std::string current_word = "";       // variable to store read input without spaces
+    std::vector<float> number_array;     // Stores the numbers extracted from the input
+    std::vector<char> operators_array;   // Stores the operators extracted from the input
 
+<<<<<<< HEAD
     std::string current_number =
         ""; // Temporary string to hold a number as it's being parsed
+=======
+    for (size_t i = 0; i <= input.length(); i++) {
+>>>>>>> 818cd0871f6776e24cbc3ed834cefd84a6e918eb
 
-    // Loop through each character in the input
-    for (size_t i = 0; i < input.length(); i++) {
-      char current_char = input[i]; // Get the current character
+      char current_char = input[i];
 
+<<<<<<< HEAD
       // If the character is a digit or a decimal point, it is part of a number
       if (isdigit(current_char) || current_char == '.') {
         current_number +=
@@ -150,14 +165,30 @@ int main() {
         }
         operators_array.push_back(
             current_char); // Store the operator in the function array
+=======
+      if (i == input.length() || input[i] == ' ') {
+        if (is_number(current_word)) {
+          number_array.push_back(std::stof(current_word)); // Convert the number to float and store it
+        } else if (current_word == "+" || current_word == "-" || current_word == "*" || current_word == "/") {
+          operators_array.push_back(input[i - 1]); // Store the operator in the function array
+        } else if (!(std::cin.eof())) {
+          std::cout << "Sorry! input, " << current_word
+                    << " not a number or operator. Please use spaces to separate numbers and operators " << "\n";
+        }
+        current_word = "";
+>>>>>>> 818cd0871f6776e24cbc3ed834cefd84a6e918eb
       }
-      // Ignore any other characters (e.g., spaces)
-    }
 
+<<<<<<< HEAD
     // If there's a number left at the end of the input, store it
     if (!current_number.empty()) {
       number_array.push_back(std::stof(
           current_number)); // Convert the final number to float and store it
+=======
+      else {
+        current_word += current_char;
+      }
+>>>>>>> 818cd0871f6776e24cbc3ed834cefd84a6e918eb
     }
 
     // Check if the input ends with an operator, which is invalid
@@ -165,9 +196,10 @@ int main() {
                                   input.back() == '*' || input.back() == '/')) {
       std::cout << "Error: Expression cannot end with an operator.\n";
       continue; // Skip to the next input if the current one is invalid
-    }
+    } // Check if the input ends with an operator, which is invalid
 
     // Perform the operation if there are numbers and operators
+<<<<<<< HEAD
     if (number_array.size() > 1) {
       perform_operations(
           number_array,
@@ -175,14 +207,35 @@ int main() {
     } else {
       std::cout << "Error: Invalid input, at least one number and operator "
                    "required.\n";
+=======
+    if (number_array.size() > 1 && operators_array.size() >= 1 && !(number_array.size() == operators_array.size())) {
+      perform_operations(number_array, operators_array); // Perform the operations and show the result
+    } else if (!(std::cin.eof())) {
+      std::cout << "Error: Invalid input, same number of operators and numbers or operators missing.\n";
+>>>>>>> 818cd0871f6776e24cbc3ed834cefd84a6e918eb
     }
 
     // Reset the arrays for the next input
     number_array.clear();
     operators_array.clear();
   }
+<<<<<<< HEAD
 
   std::cout << "Program terminated.\n"; // Display when the program is
                                         // terminated by EOF
   return 0;                             // Exit the program
+=======
+}
+
+int main() {
+  std::cout << "Welcome to eazynote calculator!\nEnter an expression (e.g., "
+               "100+222-21/5) and press Enter for result. Use spaces to separate numbers from operators\nPress Ctrl D "
+               "(Linux, "
+               "MacOs) or Ctrl Z (Windows) to exit.\n";
+
+  process_input();
+
+  std::cout << "GoodBye!\n";
+  return 0; // Exit the program
+>>>>>>> 818cd0871f6776e24cbc3ed834cefd84a6e918eb
 }
