@@ -3,7 +3,7 @@
 
 #include <iostream> // Import standard input/output stream (std::cin, std::cout)
 #include <string>   // Import string manipulation utilities (std::string class)
-#include <vector> // Import dynamic array functionality (std::vector container)
+#include <vector>   // Import dynamic array functionality (std::vector container)
 
 /* Function to check if the input string is a valid number (including decimals)
   - Here, input is passed by reference, so we don't copy the entire string.
@@ -14,9 +14,8 @@ bool is_number(const std::string &input) {
   if (input.empty() || input == "+" || input == "-")
     return false; // + and - alone are characters
 
-  size_t start =
-      (input[0] == '+' || input[0] == '-') ? 1 : 0; // Handle optional sign
-  bool hasDecimal = false; // To track if a decimal point is present
+  size_t start = (input[0] == '+' || input[0] == '-') ? 1 : 0; // Handle optional sign
+  bool hasDecimal = false;                                     // To track if a decimal point is present
 
   for (size_t i = start; i < input.length(); i++) {
     if (input[i] == '.') {
@@ -59,8 +58,7 @@ int find_highest_precedence_operator(const std::vector<char> &operators) {
 
 // Function to perform calculations based on the arrays of numbers and operators
 
-void perform_operations(std::vector<float> &numbers,
-                        std::vector<char> &operators) {
+void perform_operations(std::vector<float> &numbers, std::vector<char> &operators) {
 
   // Continue performing operations as long as there are operators
 
@@ -111,63 +109,68 @@ std::string receive_input() {
   std::getline(std::cin, input);
   return input;
 }
+/* This function process the entire line of input, separating numbers from operators and validates the input*/
 
 void process_input() {
   while (true) {
     if (std::cin.eof()) { // Check for EOF (Ctrl+D or Ctrl+Z)
       break;              // Exit the loop and terminate the program
     }
+    std::vector<float> number_array;     // Stores the numbers extracted from the input
+    std::vector<char> operators_array;   // Stores the operators extracted from the input
     std::string input = receive_input(); // variable to store input
-    std::string current_word =
-        ""; // variable to store read input without spaces
-    std::vector<float>
-        number_array; // Stores the numbers extracted from the input
-    std::vector<char>
-        operators_array; // Stores the operators extracted from the input
-
+    std::string current_word = "";       // variable to store read input without spaces
+    int error = 0;                       // check for error in input before calculation
     for (size_t i = 0; i <= input.length(); i++) {
-
       char current_char = input[i];
-
-      if (i == input.length() || input[i] == ' ') {
-        if (is_number(current_word)) {
-          number_array.push_back(std::stof(
-              current_word)); // Convert the number to float and store it
-        } else if (current_word == "+" || current_word == "-" ||
-                   current_word == "*" || current_word == "/") {
-          operators_array.push_back(
-              input[i - 1]); // Store the operator in the function array
-        } else if (!(std::cin.eof())) {
-          std::cout << "Sorry! input, " << current_word
-                    << " not a number or operator. Please use spaces to "
-                       "separate numbers and operators "
-                    << "\n";
+      // Separation begins when an operator is encountered but only if the operator does not belong to a signed number
+      if (i == input.length() || current_char == '-' || current_char == '+' || current_char == '*' ||
+          current_char == '/') {
+        if ((i == 0) || ((current_char == '-' || current_char == '+') &&
+                         (input[i - 1] == '+' || input[i - 1] == '-' || input[i - 1] == '*' || input[i - 1] == '/' ||
+                          input[i - 1] == ' '))) {
+          current_word += current_char;
+          continue;
+        } else if ((current_char == '*' || current_char == '/') &&
+                   (input[i - 1] == '-' || input[i - 1] == '+' || input[i - 1] == '*' || input[i - 1] == '/')) {
+          std::cout << "wrong operator arrangement " << input[i - 1] << " " << input[i] << "\n";
+          error = 1;
+        } else if (input.back() == '+' || input.back() == '-' || input.back() == '*' || input.back() == '/') {
+          std::cout
+              << "Error: Expression cannot end with an operator.\n"; // Skip to the next input if the current one is
+          break;
+        } else {
+          if (is_number(current_word)) {
+            number_array.push_back(std::stof(current_word)); // Convert the number to float and store it
+          } else {
+            std::cout << "invalid number " << current_word << "\n";
+            break;
+            error = 1;
+          }
+          if (i != input.length()) {
+            if (current_char == '+' || current_char == '-' || current_char == '*' || current_char == '/') {
+              operators_array.push_back(current_char);
+              // std::cout << "operator " << current_char << "\n";
+            }
+          }
+          current_word = "";
         }
-        current_word = "";
-      }
-
-      else {
-        current_word += current_char;
+      } else {
+        if (current_char != ' ') {
+          current_word += current_char;
+        }
       }
     }
-
-    // Check if the input ends with an operator, which is invalid
-    if (!number_array.empty() && (input.back() == '+' || input.back() == '-' ||
-                                  input.back() == '*' || input.back() == '/')) {
-      std::cout << "Error: Expression cannot end with an operator.\n";
-      continue; // Skip to the next input if the current one is invalid
-    } // Check if the input ends with an operator, which is invalid
 
     // Perform the operation if there are numbers and operators
-    if (number_array.size() > 1 && operators_array.size() >= 1 &&
-        !(number_array.size() == operators_array.size())) {
-      perform_operations(
-          number_array,
-          operators_array); // Perform the operations and show the result
-    } else if (!(std::cin.eof())) {
-      std::cout << "Error: Invalid input, same number of operators and numbers "
-                   "or operators missing.\n";
-    }
+    if ((number_array.size() > operators_array.size()) && error != 1) {
+
+      perform_operations(number_array,
+                         operators_array); // Perform the operations and show the result
+
+    } /*else if (!(std::cin.eof())) {
+     std::cout << "Error: Invalid input.\n";
+   }*/
 
     // Reset the arrays for the next input
     number_array.clear();
