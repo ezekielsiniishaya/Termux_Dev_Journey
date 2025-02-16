@@ -124,11 +124,13 @@ void process_input() {
     for (size_t i = 0; i <= input.length(); i++) {
       char current_char = input[i];
       // Separation begins when an operator is encountered but only if the operator does not belong to a signed number
-      if (i == input.length() || current_char == '-' || current_char == '+' || current_char == '*' ||
-          current_char == '/') {
+      if (current_char == ' ') {
+        std::cout << "Please do not use spaces\n";
+        break;
+      } else if (i == input.length() || current_char == '-' || current_char == '+' || current_char == '*' ||
+                 current_char == '/') {
         if ((i == 0) || ((current_char == '-' || current_char == '+') &&
-                         (input[i - 1] == '+' || input[i - 1] == '-' || input[i - 1] == '*' || input[i - 1] == '/' ||
-                          input[i - 1] == ' '))) {
+                         (input[i - 1] == '+' || input[i - 1] == '-' || input[i - 1] == '*' || input[i - 1] == '/'))) {
           current_word += current_char;
           continue;
         } else if ((current_char == '*' || current_char == '/') &&
@@ -138,14 +140,16 @@ void process_input() {
         } else if (input.back() == '+' || input.back() == '-' || input.back() == '*' || input.back() == '/') {
           std::cout
               << "Error: Expression cannot end with an operator.\n"; // Skip to the next input if the current one is
+          error = 1;
           break;
         } else {
+
           if (is_number(current_word)) {
             number_array.push_back(std::stof(current_word)); // Convert the number to float and store it
           } else {
             std::cout << "invalid number " << current_word << "\n";
-            break;
             error = 1;
+            break;
           }
           if (i != input.length()) {
             if (current_char == '+' || current_char == '-' || current_char == '*' || current_char == '/') {
@@ -156,9 +160,7 @@ void process_input() {
           current_word = "";
         }
       } else {
-        if (current_char != ' ') {
-          current_word += current_char;
-        }
+        current_word += current_char;
       }
     }
 
@@ -168,9 +170,9 @@ void process_input() {
       perform_operations(number_array,
                          operators_array); // Perform the operations and show the result
 
-    } /*else if (!(std::cin.eof())) {
-     std::cout << "Error: Invalid input.\n";
-   }*/
+    } else if (!(std::cin.eof()) && error != 1) {
+      std::cout << "Error: Invalid input.";
+    }
 
     // Reset the arrays for the next input
     number_array.clear();
@@ -180,8 +182,7 @@ void process_input() {
 
 int main() {
   std::cout << "Welcome to eazynote calculator!\nEnter an expression (e.g., "
-               "100+222-21/5) and press Enter for result. Use spaces to "
-               "separate numbers from operators\nPress Ctrl D "
+               "100+222-21/5) and press Enter for result. Please do not use spaces.\nPress Ctrl D "
                "(Linux, "
                "MacOs) or Ctrl Z (Windows) to exit.\n";
 
