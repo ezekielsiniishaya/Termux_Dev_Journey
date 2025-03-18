@@ -1,36 +1,35 @@
+//Code to create and print an array
 #include <stdio.h>
 
-#define MAX_ROWS 5
-#define MAX_COLUMNS 10
+#define ROW 10
+#define COLUMN 100
 
+//Function to store inputs in array and print them
 int main() {
-  char array_2D[MAX_ROWS][MAX_COLUMNS];
-  int row, column;
-
-  printf("Enter %d lines of sentences (each line up to %d characters):\n", MAX_ROWS, MAX_COLUMNS - 1);
-
-  for (row = 0; row < MAX_ROWS; row++) {
-    printf("Line %d: ", row + 1);
-    column = 0;
-    while (column < MAX_COLUMNS - 1) {
-      char character = getchar();
-      if (character == '\n') {
-        break;
-      }
-      array_2D[row][column++] = character;
+    //Array
+    char strings[ROW][COLUMN];
+    int r = 0;
+    int c;
+    int i;
+//function to receive input from keyboard and store in array
+    printf("Enter strings (Press CTRL d to stop):\n");
+    while ((i = getchar()) != EOF && r < ROW) {
+        if (i == ' ' || i == '\n') {
+            strings[r][c] = '\0'; // Null-terminate the
+            c = 0;
+            r++;
+        } else {
+            strings[r][c] = i;
+            c++;
+        }
     }
-    array_2D[row][column] = '\0';  // Null-terminate the string
-  }
+    strings[r][c] = '\0'; // Null-terminate the last string
 
-  printf("\nYou entered:\n");
-  for (row = 0; row < MAX_ROWS; row++) {
-    column = 0;
-    while (array_2D[row][column] != '\0') {
-      putchar(array_2D[row][column]);
-      column++;
+    for (int j = 0; j < r; j++) {
+        printf("%s\n", strings[j]);
     }
-    putchar('\n');
-  }
-
-  return 0;
+    //function to print the array
+    printf("Total inputs: %d\n", r);
+    printf("Array: %c\n", strings[r][c]);
+    return 0;
 }
