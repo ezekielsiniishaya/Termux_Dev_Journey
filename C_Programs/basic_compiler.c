@@ -17,6 +17,7 @@ int main() {
   // Array to store the code
   char code[MAX_ROWS][MAX_COLUMNS];
   int rows_used = read_code(code);
+  printf("Rows: %d\n", rows_used);
   compile_code(code, rows_used);
   return 0;
 }
@@ -61,9 +62,9 @@ int find_character(char array[][MAX_COLUMNS], int row) {
   if (array[row][column] == '/' && array[row][column + 1] == '/') {
     return 0; // Single-line comment
   } else if (array[row][column] == '/' && array[row][column + 1] == '*') {
-    return 0; // Multi-line comment
+    return -1; // Multi-line comment
   } else if (array[row][column] == '#') {
-    return -1; // Preprocessor directive
+    return -2; // Preprocessor directive
   }
 
   // Now check if the whole line has only whitespace or comment
@@ -76,15 +77,31 @@ int find_character(char array[][MAX_COLUMNS], int row) {
 
   return -4; // Empty or whitespace-only line
 }
-// Function to process the code and identify comment lines
+// Function to process the code and identify comment lines empty lines, or
+// instruction lines, or # lines
 void compile_code(char array[][MAX_COLUMNS], int rows) {
   printf("\nOUTPUT:\n");
-
   for (int i = 0; i < rows; i++) {
     int result = find_character(array, i);
 
-    if (result == 0) {
-      printf("Line: %d is a comment line\n", i + 1);
+    switch (result) {
+    case 0:
+      printf("Line: %d is a single comment line\n", i + 1);
+      break;
+    case -1:
+      printf("Line: %d is a multi line comment line\n", i + 1);
+      break;
+    case -2:
+      printf("Line: %d is Preprocessor directive line\n", i + 1);
+      break;
+    case -3:
+      printf("Line: %d is an instruction line\n", i + 1);
+      break;
+    case -4:
+      printf("Line: %d is an empty line\n", i + 1);
+      break;
+    default:
+      printf("Line: %d is unrecognized\n", i + 1);
     }
   }
 }
