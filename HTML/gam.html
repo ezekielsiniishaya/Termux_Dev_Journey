@@ -1,0 +1,614 @@
+<!-- Prompting at it best -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NEO DODGE - Futuristic Block Challenge</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --neon-blue: #0ff0fc;
+        --neon-pink: #ff2ced;
+        --neon-purple: #9600ff;
+        --dark-bg: #121212;
+        --glow: 0 0 10px;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Orbitron", sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: var(--dark-bg);
+        height: 100vh;
+        overflow: hidden;
+        color: white;
+        background-image: radial-gradient(
+            circle at 10% 20%,
+            rgba(150, 0, 255, 0.1) 0%,
+            transparent 20%
+          ),
+          radial-gradient(
+            circle at 90% 80%,
+            rgba(255, 44, 237, 0.1) 0%,
+            transparent 20%
+          );
+      }
+
+      h2 {
+        margin: 20px 0;
+        font-size: 2.5rem;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        color: var(--neon-blue);
+        text-shadow: var(--glow) var(--neon-blue), 0 0 20px var(--neon-blue);
+        animation: pulse 2s infinite alternate;
+      }
+
+      @keyframes pulse {
+        0% {
+          opacity: 0.8;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      #gameArea {
+        position: relative;
+        width: 90vw;
+        max-width: 400px;
+        height: 60vh;
+        border: 3px solid var(--neon-purple);
+        border-radius: 10px;
+        background-color: rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+        margin-top: 10px;
+        touch-action: none;
+        box-shadow: inset 0 0 20px var(--neon-purple),
+          0 0 30px var(--neon-purple);
+      }
+
+      #player {
+        position: absolute;
+        bottom: 10px;
+        width: 20%;
+        height: 10%;
+        background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+        border-radius: 5px;
+        left: 40%;
+        box-shadow: var(--glow) var(--neon-blue), var(--glow) var(--neon-pink);
+        transition: left 0.1s ease-out;
+        z-index: 5;
+      }
+
+      .block {
+        position: absolute;
+        width: 20%;
+        height: 10%;
+        background: linear-gradient(
+          135deg,
+          var(--neon-pink),
+          var(--neon-purple)
+        );
+        border-radius: 3px;
+        top: 0;
+        box-shadow: var(--glow) var(--neon-pink);
+        z-index: 2;
+        transition: transform 0.1s;
+      }
+
+      .block:hover {
+        transform: scale(1.05);
+      }
+
+      #controls {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+        width: 100%;
+        flex-wrap: wrap;
+      }
+
+      button {
+        padding: 15px 25px;
+        font-size: 1.2rem;
+        flex: 1;
+        max-width: 130px;
+        font-family: "Orbitron", sans-serif;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        border: 2px solid var(--neon-blue);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-shadow: 0 0 5px var(--neon-blue);
+        letter-spacing: 1px;
+      }
+
+      button:hover {
+        background: rgba(15, 240, 252, 0.2);
+        box-shadow: 0 0 15px var(--neon-blue);
+        transform: translateY(-2px);
+      }
+
+      button:active {
+        transform: translateY(1px);
+      }
+
+      #score {
+        margin-top: 20px;
+        font-size: 1.8rem;
+        color: var(--neon-blue);
+        text-shadow: var(--glow) var(--neon-blue);
+      }
+
+      #overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        color: white;
+        font-size: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        z-index: 10;
+        display: none;
+        flex-direction: column;
+        padding: 20px;
+        backdrop-filter: blur(5px);
+      }
+
+      #overlay button {
+        margin-top: 30px;
+        font-size: 1.2rem;
+        padding: 12px 25px;
+        max-width: unset;
+        background: linear-gradient(
+          45deg,
+          var(--neon-purple),
+          var(--neon-pink)
+        );
+      }
+
+      #gameOverText {
+        animation: glitch 1s linear infinite;
+        margin-bottom: 20px;
+      }
+
+      @keyframes glitch {
+        0%,
+        100% {
+          transform: translate(0);
+        }
+        20% {
+          transform: translate(-3px, 3px);
+        }
+        40% {
+          transform: translate(-3px, -3px);
+        }
+        60% {
+          transform: translate(3px, 3px);
+        }
+        80% {
+          transform: translate(3px, -3px);
+        }
+      }
+
+      .particle {
+        position: absolute;
+        background: var(--neon-blue);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      #levelIndicator {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: var(--neon-pink);
+        font-size: 1rem;
+        text-shadow: 0 0 5px var(--neon-pink);
+      }
+
+      /* Mobile optimizations */
+      @media (max-width: 600px) {
+        h2 {
+          font-size: 1.8rem;
+        }
+
+        button {
+          padding: 12px 20px;
+          font-size: 1rem;
+        }
+
+        #score {
+          font-size: 1.4rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h2>NEO DODGE</h2>
+    <div id="gameArea">
+      <div id="levelIndicator">LEVEL: 1</div>
+      <div id="overlay">
+        <div id="gameOverText">
+          ⚡ SYSTEM FAILURE ⚡<br />
+          SCORE: <span id="finalScore">0</span>
+        </div>
+        <button onclick="restartGame()">⟳ REBOOT</button>
+      </div>
+      <div id="player"></div>
+    </div>
+
+    <div id="controls">
+      <button id="leftBtn">◀ DASH</button>
+      <button id="rightBtn">DASH ▶</button>
+      <button id="pauseBtn">⏸ FREEZE</button>
+    </div>
+
+    <div id="score">ENERGY: 0</div>
+
+    <script>
+      const gameArea = document.getElementById("gameArea");
+      const player = document.getElementById("player");
+      const scoreDisplay = document.getElementById("score");
+      const finalScore = document.getElementById("finalScore");
+      const overlay = document.getElementById("overlay");
+      const leftBtn = document.getElementById("leftBtn");
+      const rightBtn = document.getElementById("rightBtn");
+      const pauseBtn = document.getElementById("pauseBtn");
+      const levelIndicator = document.getElementById("levelIndicator");
+
+      let score = 0;
+      let blockInterval;
+      let isGameOver = false;
+      let isPaused = false;
+      const fallingBlocks = [];
+      let gameSpeed = 1000;
+      let fallSpeed = 5;
+      let level = 1;
+
+      // Keyboard controls
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") movePlayer("left");
+        if (e.key === "ArrowRight") movePlayer("right");
+        if (e.key === " ") togglePause();
+      });
+
+      function movePlayer(direction) {
+        if (isGameOver || isPaused) return;
+
+        const areaWidth = gameArea.clientWidth;
+        const playerWidth = player.clientWidth;
+        const currentLeft = player.offsetLeft;
+        const step = areaWidth * 0.2;
+
+        if (direction === "left" && currentLeft > 0) {
+          player.style.left = Math.max(0, currentLeft - step) + "px";
+          createParticles(player, "left");
+        } else if (
+          direction === "right" &&
+          currentLeft + playerWidth < areaWidth
+        ) {
+          player.style.left =
+            Math.min(currentLeft + step, areaWidth - playerWidth) + "px";
+          createParticles(player, "right");
+        }
+      }
+
+      function createParticles(element, direction) {
+        const elementRect = element.getBoundingClientRect();
+        const colors = ["#0ff0fc", "#ff2ced", "#9600ff", "#ffffff"];
+
+        for (let i = 0; i < 10; i++) {
+          const particle = document.createElement("div");
+          particle.classList.add("particle");
+
+          const size = Math.random() * 4 + 2;
+          const x = direction === "left" ? elementRect.left : elementRect.right;
+          const y = elementRect.top + elementRect.height / 2;
+
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          particle.style.left = `${x}px`;
+          particle.style.top = `${y}px`;
+          particle.style.background =
+            colors[Math.floor(Math.random() * colors.length)];
+          particle.style.opacity = Math.random() * 0.5 + 0.5;
+
+          document.body.appendChild(particle);
+
+          const animationDuration = Math.random() * 1 + 0.5;
+          const moveX =
+            (Math.random() - 0.5) * 100 * (direction === "left" ? -1 : 1);
+          const moveY = (Math.random() - 0.5) * 50;
+
+          particle.animate(
+            [
+              { transform: `translate(0, 0)`, opacity: 1 },
+              { transform: `translate(${moveX}px, ${moveY}px)`, opacity: 0 },
+            ],
+            {
+              duration: animationDuration * 1000,
+              easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+            }
+          ).onfinish = () => particle.remove();
+        }
+      }
+
+      function createBlock() {
+        if (isGameOver || isPaused) return;
+
+        const block = document.createElement("div");
+        block.classList.add("block");
+
+        const areaWidth = gameArea.clientWidth;
+        const blockWidth = areaWidth * 0.2;
+        const maxIndex = 1 / 0.2; // 5 slots
+        const positionIndex = Math.floor(Math.random() * maxIndex);
+        block.style.left = positionIndex * blockWidth + "px";
+        gameArea.appendChild(block);
+
+        // Random neon color for blocks
+        const colors = [
+          "linear-gradient(135deg, #ff2ced, #9600ff)",
+          "linear-gradient(135deg, #9600ff, #0ff0fc)",
+          "linear-gradient(135deg, #0ff0fc, #ff2ced)",
+        ];
+        block.style.background =
+          colors[Math.floor(Math.random() * colors.length)];
+
+        let blockTop = 0;
+        const fall = setInterval(() => {
+          if (isGameOver || isPaused) return;
+
+          blockTop += fallSpeed;
+          block.style.top = blockTop + "px";
+
+          const playerRect = player.getBoundingClientRect();
+          const blockRect = block.getBoundingClientRect();
+
+          if (
+            blockRect.bottom >= playerRect.top &&
+            blockRect.left < playerRect.right &&
+            blockRect.right > playerRect.left
+          ) {
+            createExplosion(blockRect, playerRect);
+            endGame();
+            clearInterval(fall);
+            return;
+          }
+
+          if (blockTop >= gameArea.clientHeight) {
+            clearInterval(fall);
+            if (block.parentElement) block.remove();
+            score++;
+            scoreDisplay.textContent = `ENERGY: ${score}`;
+
+            // Level progression
+            if (score % 10 === 0) {
+              levelUp();
+            }
+          }
+        }, 20);
+
+        fallingBlocks.push({ block, interval: fall });
+      }
+
+      function createExplosion(blockRect, playerRect) {
+        const explosionCenter = {
+          x: (blockRect.left + blockRect.right) / 2,
+          y: (blockRect.top + blockRect.bottom) / 2,
+        };
+
+        const colors = ["#0ff0fc", "#ff2ced", "#9600ff", "#ffffff"];
+
+        for (let i = 0; i < 30; i++) {
+          const particle = document.createElement("div");
+          particle.classList.add("particle");
+
+          const size = Math.random() * 6 + 3;
+          const angle = Math.random() * Math.PI * 2;
+          const distance = Math.random() * 100 + 50;
+          const duration = Math.random() * 1 + 0.5;
+
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          particle.style.left = `${explosionCenter.x}px`;
+          particle.style.top = `${explosionCenter.y}px`;
+          particle.style.background =
+            colors[Math.floor(Math.random() * colors.length)];
+          particle.style.opacity = 1;
+
+          document.body.appendChild(particle);
+
+          const endX = explosionCenter.x + Math.cos(angle) * distance;
+          const endY = explosionCenter.y + Math.sin(angle) * distance;
+
+          particle.animate(
+            [
+              { transform: "translate(0, 0) scale(1)", opacity: 1 },
+              {
+                transform: `translate(${endX - explosionCenter.x}px, ${
+                  endY - explosionCenter.y
+                }px) scale(0.2)`,
+                opacity: 0,
+              },
+            ],
+            {
+              duration: duration * 1000,
+              easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+            }
+          ).onfinish = () => particle.remove();
+        }
+      }
+
+      function levelUp() {
+        level++;
+        levelIndicator.textContent = `LEVEL: ${level}`;
+
+        // Increase difficulty
+        clearInterval(blockInterval);
+        gameSpeed = Math.max(200, gameSpeed - 100);
+        fallSpeed = Math.min(15, fallSpeed + 1);
+
+        // Flash effect for level up
+        gameArea.style.boxShadow = `inset 0 0 50px ${
+          level % 2 === 0 ? "var(--neon-blue)" : "var(--neon-pink)"
+        }, 0 0 50px ${
+          level % 2 === 0 ? "var(--neon-blue)" : "var(--neon-pink)"
+        }`;
+        setTimeout(() => {
+          gameArea.style.boxShadow =
+            "inset 0 0 20px var(--neon-purple), 0 0 30px var(--neon-purple)";
+        }, 500);
+
+        blockInterval = setInterval(createBlock, gameSpeed);
+      }
+
+      function endGame() {
+        isGameOver = true;
+        clearInterval(blockInterval);
+        fallingBlocks.forEach(({ block, interval }) => {
+          clearInterval(interval);
+          if (block.parentElement) block.remove();
+        });
+
+        finalScore.textContent = score;
+        overlay.style.display = "flex";
+
+        // Game over sound effect
+        if (
+          typeof AudioContext !== "undefined" ||
+          typeof webkitAudioContext !== "undefined"
+        ) {
+          const audioContext = new (AudioContext || webkitAudioContext)();
+          const oscillator = audioContext.createOscillator();
+          const gainNode = audioContext.createGain();
+
+          oscillator.type = "sawtooth";
+          oscillator.frequency.setValueAtTime(110, audioContext.currentTime);
+          oscillator.frequency.exponentialRampToValueAtTime(
+            55,
+            audioContext.currentTime + 0.5
+          );
+
+          gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(
+            0.01,
+            audioContext.currentTime + 0.5
+          );
+
+          oscillator.connect(gainNode);
+          gainNode.connect(audioContext.destination);
+
+          oscillator.start();
+          oscillator.stop(audioContext.currentTime + 0.5);
+        }
+      }
+
+      function restartGame() {
+        isGameOver = false;
+        isPaused = false;
+        score = 0;
+        level = 1;
+        gameSpeed = 1000;
+        fallSpeed = 5;
+        scoreDisplay.textContent = "ENERGY: 0";
+        levelIndicator.textContent = "LEVEL: 1";
+        overlay.style.display = "none";
+        player.style.left = "40%";
+
+        // Remove old blocks
+        fallingBlocks.forEach(({ block, interval }) => {
+          clearInterval(interval);
+          if (block.parentElement) block.remove();
+        });
+        fallingBlocks.length = 0;
+
+        // Re-enable controls and start game again
+        blockInterval = setInterval(createBlock, gameSpeed);
+      }
+
+      function togglePause() {
+        if (isGameOver) return;
+        isPaused = !isPaused;
+        pauseBtn.textContent = isPaused ? "▶ UNFREEZE" : "⏸ FREEZE";
+
+        if (isPaused) {
+          gameArea.style.boxShadow = "inset 0 0 30px #ffffff, 0 0 40px #ffffff";
+        } else {
+          gameArea.style.boxShadow =
+            "inset 0 0 20px var(--neon-purple), 0 0 30px var(--neon-purple)";
+        }
+      }
+
+      // Event listeners
+      leftBtn.addEventListener("mousedown", () => movePlayer("left"));
+      leftBtn.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        movePlayer("left");
+      });
+
+      rightBtn.addEventListener("mousedown", () => movePlayer("right"));
+      rightBtn.addEventListener("touchstart", (e) => {
+        e.preventDefault();
+        movePlayer("right");
+      });
+
+      pauseBtn.addEventListener("click", togglePause);
+
+      // Prevent touch scroll
+      document.addEventListener(
+        "touchmove",
+        (e) => {
+          if (e.target.id === "leftBtn" || e.target.id === "rightBtn") {
+            e.preventDefault();
+          }
+        },
+        { passive: false }
+      );
+
+      // Start game with a countdown
+      function startGameWithCountdown() {
+        let count = 3;
+        overlay.style.display = "flex";
+        const gameOverText = document.getElementById("gameOverText");
+        const originalHTML = gameOverText.innerHTML;
+
+        const countdownInterval = setInterval(() => {
+          if (count > 0) {
+            gameOverText.innerHTML = `STARTING IN<br>${count}`;
+            count--;
+          } else {
+            clearInterval(countdownInterval);
+            overlay.style.display = "none";
+            blockInterval = setInterval(createBlock, gameSpeed);
+          }
+        }, 1000);
+      }
+
+      // Initialize game
+      startGameWithCountdown();
+    </script>
+  </body>
+</html>
