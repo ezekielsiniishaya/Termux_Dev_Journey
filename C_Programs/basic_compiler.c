@@ -12,7 +12,7 @@ void compile_code(char array[MAX_ROWS][MAX_COLUMNS], int rows);
 int find_character(char array[][MAX_COLUMNS], int row);
 int find_semi_colon(char array[][MAX_COLUMNS], int row);
 int find_index_multiple(char array[][MAX_COLUMNS], int row);
-
+int read_char(char array[][MAX_COLUMNS], int row);
 int main() {
   // Array to store the code
   char code[MAX_ROWS][MAX_COLUMNS];
@@ -90,6 +90,10 @@ void compile_code(char array[][MAX_COLUMNS], int rows) {
       break;
     case -1:
       printf("Line: %d is a multi line comment line\n", i + 1);
+      int nest = read_char(array, result);
+      if (nest == 1) {
+        printf("Multiline comment don't nest in C.");
+      }
       break;
     case -2:
       printf("Line: %d is Preprocessor directive line\n", i + 1);
@@ -119,19 +123,15 @@ int find_semi_colon(char array[][MAX_COLUMNS], int row) {
   }
   return -1;
 }
-
-// This function checks if current line is single line comment or multiline
-// comment
-/* This function finds the index of the start of a multi-li
-ne comment
-   in a given row. It returns the index of the comment star
-t or -1 if none is
-   found. */
-int find_index_multiple(char array[][MAX_COLUMNS], int row) {
+/* This function finds the index of the end of a multi-line comm
+ent in a given
+ * row. It returns the index of the comment closing tag or -1 if none is found.
+*/
+int read_char(char array[][MAX_COLUMNS], int row) {
   int column = 0;
   while (array[row][column] != '\0') {
     if (array[row][column] == '/' && array[row][column + 1] == '*') {
-      return column;
+      return 1;
     }
     column++;
   }
